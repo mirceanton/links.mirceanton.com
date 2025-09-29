@@ -1,5 +1,7 @@
 ---
 title: Links | Mircea Anton
+baseURL: https://links.mirceanton.com/
+languageCode: en-us
 theme: github.com/jpanther/lynx
 
 enableEmoji: true
