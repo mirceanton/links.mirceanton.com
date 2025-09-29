@@ -1,0 +1,8 @@
+[tools]
+# Runtimes
+go = "latest"
+dart = "latest"
+
+# Static Site Generator
+hugo-extended = "0.150.0"
+"github:sass/dart-sass" = { "version" = "1.93.0", "extract_all" = "true", "executable" = "dart-sass/sass" }

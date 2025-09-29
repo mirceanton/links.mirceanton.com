@@ -1,0 +1,29 @@
+---
+title: Links | Mircea Anton
+theme: github.com/jpanther/lynx
+
+enableEmoji: true
+disableKinds: [taxonomy, term]
+
+params:
+  author:
+    name: Mircea-Pavel Anton
+    headline: DevOps by day, HomeOps by night!
+    image: icon.png
+    links:
+      - github: https://github.com/jpanther/lynx
+      - link: https://mirceanton.com
+      - youtube: https://www.youtube.com/@mirceanton
+      - email: "mailto:mircea@mirceanton.com"
+      - steam: https://steamcommunity.com/id/mikeanth/
+      - reddit: https://www.reddit.com/user/MikeAnth/
+      - spotify: https://open.spotify.com/user/jpa2p7j8yrjjce6qtfze0uea5?si=055a00896caf4a1f
+      - instagram: https://instagram.com/_mirceanton
+      - linkedin: https://www.linkedin.com/in/mirceanton
+
+markup:
+  highlight:
+    noClasses: false
+  goldmark:
+    renderer:
+      unsafe: true
