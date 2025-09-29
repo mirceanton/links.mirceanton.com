@@ -13,7 +13,7 @@ params:
     headline: DevOps by day, HomeOps by night!
     image: icon.png
     links:
-      - github: https://github.com/jpanther/lynx
+      - github: https://github.com/mirceanton
       - link: https://mirceanton.com
       - youtube: https://www.youtube.com/@mirceanton
       - email: "mailto:mircea@mirceanton.com"
