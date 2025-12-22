@@ -1,0 +1,8 @@
+---
+default: true
+
+MD013: false # Ignore long lines
+MD031: false # Ignore blocks of code with no blank line before or after (chirpy code block file name annotation)
+MD033: false # Ignore inline HTML
+MD041: false # Ignore images without alt tags
+MD049: false # Ignore "emphasis-style" as that's how chirpy does image captions
