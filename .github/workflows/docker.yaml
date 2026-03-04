@@ -5,9 +5,16 @@ name: Docker
 on:
   push:
     branches: [main]
-    tags: ["v*"]
+    paths:
+      - site/**
+      - Dockerfile
+      - nginx.conf
   pull_request:
     branches: [main]
+    paths:
+      - site/**
+      - Dockerfile
+      - nginx.conf
 
 permissions:
   contents: read
@@ -40,8 +47,7 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: |
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value={{date 'YYYY.MM.DD'}},enable={{is_default_branch}}
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push
