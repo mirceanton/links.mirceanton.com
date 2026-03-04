@@ -29,15 +29,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup mise
-        uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
-
-      - name: Build site
-        run: mise exec -- hugo --minify --destination ./public
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
-        with: { path: ./public }
+        with: { path: ./site }
 
   deploy:
     runs-on: ubuntu-latest
