@@ -47,5 +47,5 @@ url_api = "https://api.github.com/repos/rhysd/actionlint/releases/assets/3849249
 provenance = "github-attestations"
 
 [[tools."npm:prettier"]]
-version = "3.8.4"
+version = "3.9.6"
 backend = "npm:prettier"
