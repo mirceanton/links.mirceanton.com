@@ -1,3 +1,7 @@
 [tools]
 actionlint = "1"
 "npm:prettier" = "3"
+
+[settings]
+# Hold back freshly published tool releases (supply-chain protection).
+minimum_release_age = "3d"
