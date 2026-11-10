@@ -4,9 +4,9 @@ A minimalist "link in bio" style landing page that aggregates all my social medi
 
 ## Latest video and post
 
-The two cards at the top are filled in at build time by `scripts/update-latest.py`, from the YouTube channel feed and `https://mirceanton.com/feed.xml`. The GitHub Pages workflow runs it on every push and every 8 hours; the Docker workflow runs it on each image build. If a feed can't be read, the values committed in `site/index.html` ship instead.
+The two cards at the top are written into `site/index.html` by `scripts/update-latest.py`, from the YouTube channel feed and `https://mirceanton.com/feed.xml`. The `Update latest video and post` workflow runs it every 8 hours (or on demand) and commits the file as the bot when something changed. That push triggers the Pages and Docker builds, which only run on push. If a feed can't be read, the run fails and nothing is committed.
 
-To refresh the committed fallback locally:
+To refresh them locally:
 
 ```bash
 python3 scripts/update-latest.py && mise exec -- prettier --write site/index.html

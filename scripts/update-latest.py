@@ -2,9 +2,9 @@
 """Write the latest YouTube video and blog post into site/index.html.
 
 Rewrites the HTML between the <!-- latest:video:start/end --> and
-<!-- latest:post:start/end --> markers. The Pages and Docker workflows run it at
-build time (Pages also rebuilds every 8 hours), so nothing is committed back.
-The committed values are the fallback if a feed can't be read.
+<!-- latest:post:start/end --> markers. Run every 8 hours by
+.github/workflows/update-latest.yaml, which formats the file with prettier and
+commits it when it changed; that push triggers the Pages and Docker builds.
 
 Stdlib only. Exits non-zero, leaving the file untouched, if a feed can't be read.
 """
