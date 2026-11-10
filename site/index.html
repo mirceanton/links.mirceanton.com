@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="theme-auto" lang="en">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,10 +11,17 @@
     <meta name="description" content="DevOps by day, HomeOps by night!" />
     <meta name="author" content="Mircea-Pavel Anton" />
     <meta rel="canonical" href="https://links.mirceanton.com" />
+    <meta name="theme-color" content="#5BCFFA" />
 
+    <link
+      rel="preload"
+      href="fonts/Inter-Black.subset.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/brands.css" />
 
     <script
       defer
@@ -24,170 +31,215 @@
   </head>
 
   <body>
-    <div class="container">
-      <div class="column">
-        <img
-          class="avatar avatar--rounded"
-          src="images/avatar.png"
-          alt="Mircea Anton"
-        />
+    <svg width="0" height="0" class="defs" aria-hidden="true">
+      <!--
+        Wordmark die-cut, rounded: blurring the alpha and thresholding it grows the shape
+        evenly in every direction, so corners come out round and the cut follows the letters.
+        (feMorphology dilates with a square kernel, which reads boxy.)
+      -->
+      <filter id="diecut-lg" x="-20%" y="-40%" width="140%" height="180%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="wb" />
+        <feComponentTransfer in="wb" result="w">
+          <feFuncA type="linear" slope="60" intercept="-1.9" />
+        </feComponentTransfer>
+        <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="bb" />
+        <feComponentTransfer in="bb" result="b">
+          <feFuncA type="linear" slope="60" intercept="-0.7" />
+        </feComponentTransfer>
+        <feGaussianBlur in="b" stdDeviation="2" result="bs" />
+        <feOffset in="bs" dx="6" dy="6" result="sh" />
+        <feComponentTransfer in="sh" result="shadow">
+          <feFuncA type="linear" slope=".7" />
+        </feComponentTransfer>
+        <feFlood flood-color="#0A0A0A" />
+        <feComposite in2="b" operator="in" result="outline" />
+        <feFlood flood-color="#FFFFFF" />
+        <feComposite in2="w" operator="in" result="white" />
+        <feMerge>
+          <feMergeNode in="shadow" />
+          <feMergeNode in="outline" />
+          <feMergeNode in="white" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </svg>
 
-        <h1>Mircea-Pavel Anton</h1>
-        <p>DevOps by day, HomeOps by night!</p>
+    <main class="page">
+      <h1><span class="wordmark">mirceanton</span></h1>
 
-        <div class="button-stack" role="navigation">
+      <!-- Between the latest:* markers is rewritten by scripts/update-latest.py on a schedule. Don't edit by hand. -->
+      <div class="latest">
+        <!-- latest:video:start -->
+        <a
+          class="card card--video"
+          href="https://www.youtube.com/watch?v=Q6FP4Vwik5U"
+          target="_blank"
+          rel="noopener"
+          data-umami-event="link-click"
+          data-umami-event-link="latest-video"
+        >
+          <span class="play" aria-hidden="true"></span>
+          <span class="card__label">
+            <span class="kicker">latest video</span>
+            The Best RouterOS Device MikroTik DIDN’T Make
+          </span>
+        </a>
+        <!-- latest:video:end -->
+        <!-- latest:post:start -->
+        <a
+          class="card card--post"
+          href="https://mirceanton.com/posts/routeros-zimaboard-2-homelab/"
+          target="_blank"
+          rel="noopener"
+          data-umami-event="link-click"
+          data-umami-event-link="latest-post"
+        >
+          <span class="prompt" aria-hidden="true">&gt;_</span>
+          <span class="card__label">
+            <span class="kicker">latest post</span>
+            RouterOS as a Whole Homelab: Router, NAS and Apps on a ZimaBoard 2
+          </span>
+        </a>
+        <!-- latest:post:end -->
+      </div>
+
+      <ul class="links">
+        <li>
           <a
-            class="button button-github"
-            href="https://github.com/mirceanton"
-            target="_blank"
-            rel="noopener"
-            role="button"
-            data-umami-event="link-click"
-            data-umami-event-link="github"
-          >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/github.svg"
-              alt="GitHub Logo"
-            />GitHub
-          </a>
-
-          <a
-            class="button button-default"
-            href="https://mirceanton.com"
-            target="_blank"
-            rel="noopener"
-            role="button"
-            data-umami-event="link-click"
-            data-umami-event-link="website"
-          >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/generic-homepage.svg"
-              alt="Website Icon"
-            />Website
-          </a>
-
-          <a
-            class="button button-yt"
+            class="card"
             href="https://www.youtube.com/@mirceanton"
             target="_blank"
             rel="noopener"
-            role="button"
             data-umami-event="link-click"
             data-umami-event-link="youtube"
           >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/youtube.svg"
-              alt="YouTube Logo"
-            />YouTube
+            <span class="card__tile"
+              ><img src="images/icons/youtube.svg" alt=""
+            /></span>
+            <span class="card__label">YouTube</span>
           </a>
-
+        </li>
+        <li>
           <a
-            class="button button-discord"
-            href="https://discordapp.com/users/637553176991629312"
+            class="card"
+            href="https://mirceanton.com"
             target="_blank"
             rel="noopener"
-            role="button"
             data-umami-event="link-click"
-            data-umami-event-link="discord"
+            data-umami-event-link="website"
           >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/discord.svg"
-              alt="Discord Logo"
-            />Discord
+            <span class="card__tile"
+              ><img src="images/icons/generic-homepage.svg" alt=""
+            /></span>
+            <span class="card__label">Blog</span>
           </a>
-
+        </li>
+        <li>
           <a
-            class="button button-default"
-            href="mailto:mircea@mirceanton.com"
-            role="button"
-            data-umami-event="link-click"
-            data-umami-event-link="email"
-          >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/generic-email.svg"
-              alt="Email Icon"
-            />Email
-          </a>
-
-          <a
-            class="button button-steam"
-            href="https://steamcommunity.com/id/mikeanth/"
+            class="card"
+            href="https://github.com/mirceanton"
             target="_blank"
             rel="noopener"
-            role="button"
             data-umami-event="link-click"
-            data-umami-event-link="steam"
+            data-umami-event-link="github"
           >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/steam.svg"
-              alt="Steam Logo"
-            />Steam
+            <span class="card__tile"
+              ><img src="images/icons/github.svg" alt=""
+            /></span>
+            <span class="card__label">GitHub</span>
           </a>
-
+        </li>
+        <li>
           <a
-            class="button button-reddit"
-            href="https://www.reddit.com/user/MikeAnth/"
-            target="_blank"
-            rel="noopener"
-            role="button"
-            data-umami-event="link-click"
-            data-umami-event-link="reddit"
-          >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/reddit.svg"
-              alt="Reddit Logo"
-            />Reddit
-          </a>
-
-          <a
-            class="button button-instagram"
-            href="https://instagram.com/_mirceanton"
-            target="_blank"
-            rel="noopener"
-            role="button"
-            data-umami-event="link-click"
-            data-umami-event-link="instagram"
-          >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/instagram.svg"
-              alt="Instagram Logo"
-            />Instagram
-          </a>
-
-          <a
-            class="button button-linked"
+            class="card"
             href="https://www.linkedin.com/in/mirceanton"
             target="_blank"
             rel="noopener"
-            role="button"
             data-umami-event="link-click"
             data-umami-event-link="linkedin"
           >
-            <img
-              class="icon"
-              aria-hidden="true"
-              src="images/icons/linkedin.svg"
-              alt="LinkedIn Logo"
-            />LinkedIn
+            <span class="card__tile"
+              ><img src="images/icons/linkedin.svg" alt=""
+            /></span>
+            <span class="card__label">LinkedIn</span>
           </a>
-        </div>
-      </div>
-    </div>
+        </li>
+        <li>
+          <a
+            class="card"
+            href="https://discordapp.com/users/637553176991629312"
+            target="_blank"
+            rel="noopener"
+            data-umami-event="link-click"
+            data-umami-event-link="discord"
+          >
+            <span class="card__tile"
+              ><img src="images/icons/discord.svg" alt=""
+            /></span>
+            <span class="card__label">Discord</span>
+          </a>
+        </li>
+        <li>
+          <a
+            class="card"
+            href="mailto:mircea@mirceanton.com"
+            data-umami-event="link-click"
+            data-umami-event-link="email"
+          >
+            <span class="card__tile"
+              ><img src="images/icons/generic-email.svg" alt=""
+            /></span>
+            <span class="card__label">Email</span>
+          </a>
+        </li>
+        <li>
+          <a
+            class="card"
+            href="https://www.reddit.com/user/MikeAnth/"
+            target="_blank"
+            rel="noopener"
+            data-umami-event="link-click"
+            data-umami-event-link="reddit"
+          >
+            <span class="card__tile"
+              ><img src="images/icons/reddit.svg" alt=""
+            /></span>
+            <span class="card__label">Reddit</span>
+          </a>
+        </li>
+        <li>
+          <a
+            class="card"
+            href="https://instagram.com/_mirceanton"
+            target="_blank"
+            rel="noopener"
+            data-umami-event="link-click"
+            data-umami-event-link="instagram"
+          >
+            <span class="card__tile"
+              ><img src="images/icons/instagram.svg" alt=""
+            /></span>
+            <span class="card__label">Instagram</span>
+          </a>
+        </li>
+        <li>
+          <a
+            class="card"
+            href="https://steamcommunity.com/id/mikeanth/"
+            target="_blank"
+            rel="noopener"
+            data-umami-event="link-click"
+            data-umami-event-link="steam"
+          >
+            <span class="card__tile"
+              ><img src="images/icons/steam.svg" alt=""
+            /></span>
+            <span class="card__label">Steam</span>
+          </a>
+        </li>
+      </ul>
+
+      <footer>DevOps by day, HomeOps by night</footer>
+    </main>
   </body>
 </html>

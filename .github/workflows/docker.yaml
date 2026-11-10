@@ -9,12 +9,14 @@ on:
       - site/**
       - Dockerfile
       - nginx.conf
+      - scripts/**
   pull_request:
     branches: [main]
     paths:
       - site/**
       - Dockerfile
       - nginx.conf
+      - scripts/**
   workflow_dispatch:
     inputs:
       dry-run:
@@ -33,6 +35,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Same as the Pages build; on failure the committed cards are kept.
+      - name: Fill in the latest video and post
+        run: python3 scripts/update-latest.py || echo "::warning::Couldn't read the feeds; keeping the committed latest cards."
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
