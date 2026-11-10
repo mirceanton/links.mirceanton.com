@@ -1,382 +1,279 @@
 /*
-* LittleLink
-* https://littlelink.io
-* Free to use under the MIT license
-* http://www.opensource.org/licenses/mit-license.php
-*/
+ * links.mirceanton.com
+ * Neo-brutalist "frame" brand: thick black outlines, hard offset shadows,
+ * die-cut stickers, Inter Black. Tokens mirror the brand kit's tokens.css.
+ */
 
-/* Base Typography Settings
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
+@font-face {
+  font-family: "Inter";
+  font-weight: 900;
+  font-display: swap;
+  src: url("../fonts/Inter-Black.subset.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/DejaVuSansMono-Bold.subset.woff2") format("woff2");
+}
+
 :root {
-	font-size:16px;
+  --sky: #5bcffa;
+  --sky-dot: #54c0e8;
+  --ink: #0f1a24;
+  --ink-panel: #1e2e3c;
+  --outline: #0a0a0a;
+  --white: #ffffff;
+  --text-on-ink: #d7e0e8;
+  --amber: #ffd84d;
+  --mint: #7df0dc;
+
+  --ground: var(--sky);
+  --dot: var(--sky-dot);
+  --paper: url("../images/paper.svg");
+  --foot: var(--outline);
+
+  --border: 5px solid var(--outline);
+  --shadow: 5px 5px 0 var(--outline);
+  --font: "Inter", system-ui, sans-serif;
+  --mono: "DejaVu Sans Mono", ui-monospace, monospace;
 }
 
-/* Grid
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  .container {
-	position:relative;
-	width:100%;
-	max-width:37.5rem;     				/* 600px */
-    text-align:center;
-	margin:0 auto;
-	padding:3rem 1.25rem 0 1.25rem;
-	box-sizing:border-box;
-}
-.container-left {
-	position:relative;
-	width:100%;
-	max-width:37.5rem;
-	text-align:left;
-	margin:0 auto;
-	padding:0 1.25rem;
-	box-sizing:border-box;
-}
-.container-left p {
-	margin-bottom: 1rem;  				/* 16px space between paragraphs */
+/* Dark: Ink ground. Black shadows vanish on Ink, so cards stay white for fill contrast. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: var(--ink);
+    --dot: var(--ink-panel);
+    --paper: url("../images/paper-dark.svg");
+    --foot: var(--text-on-ink);
   }
-.column {
-	position:center;
-	width:100%;
-	float:center;
-	box-sizing:border-box;
-}
-/* For devices larger than 400px */
-  @media (min-width:25rem) {            /* 400px */
-    .container {
-	width:85%;
-	padding-left:0;
-	padding-right:0;
-}
-}/* For devices larger than 550px */
-  @media (min-width:34.375rem) {        /* 550px */
-    .container {
-	width:80%;
-}
-.column,.columns {
-	margin-left:0;
-}
-.column:first-child,.columns:first-child {
-	margin-left:0;
-}
 }
 
-/* Base Styles
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  body {
-	margin:0;
-	padding:0;
-	background-color:#ffffff;
-	color:#1a1a1a;
-	font-family:"Open Sans",system-ui;
-	font-size:1.125rem;     				/* 18px */
-    font-weight:400;
-	line-height:1.6;
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+body {
+  /* Paper texture over the dot grid, so the dots read as printed on the sheet */
+  background-color: var(--ground);
+  background-image:
+    var(--paper),
+    radial-gradient(circle at center, var(--dot) 2px, transparent 2.5px);
+  background-size:
+    480px 480px,
+    60px 60px;
+  color: var(--outline);
+  font-family: var(--font);
+  overflow-x: hidden;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.defs {
+  position: absolute;
 }
 
-/* Typography
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  h1 {
-	margin:0 0 0.5rem 0;
-	font-size:3rem;         		/* 48px */
-    font-weight:800;
-	line-height:1;
-	letter-spacing:0;
-	word-wrap:break-word;
-	overflow-wrap:break-word;
-	hyphens:auto;           		/* Delete this to remove automatic hyphen on line break */
-}
-.container p {
-	margin:0 0 2rem 0;
+.page {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 56px 16px 64px;
 }
 
-/* Base Typography Settings
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-/* Base size - 16px browser default */
-:root {
-  font-size:16px;           /* Using a 1.25 modular scale for typography */
-  --scale-0:1rem;           /* 16px */
-  --scale-1:1.25rem;        /* 20px */
-  --scale-2:1.563rem;       /* 25px */
-  --scale-3:1.953rem;       /* 31px */
-  --scale-4:2.441rem;       /* 39px */
-  --scale-5:3.052rem;       /* 49px */
-
-  /* Spacing units */
-  --spacing-xs:0.5rem;      /* 8px */
-  --spacing-s:1rem;         /* 16px */
-  --spacing-m:1.5rem;       /* 24px */
-  --spacing-l:2rem;         /* 32px */
-  --spacing-xl:3rem;        /* 48px */
-  --spacing-xxl:4rem;       /* 64px */
-}
-
-/* Avatar */
-.avatar {
-	width: 8rem;             /* 128px */
-	height: 8rem;
-	border-radius: 50%;
-	object-fit: cover;
-	background-position: center;
-	margin-bottom: var(--spacing-l);
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-  }
-
-/* Typography Scale */
+/* Wordmark: die-cut sticker (white border, black outline, soft shadow), tilt under 3 degrees */
 h1 {
-	margin:0 0 var(--spacing-m) 0;
-	font-size:var(--scale-5);           /* ~49px */
-  	font-weight:800;
-	line-height:1.1;
-	letter-spacing:-0.02em;
-	word-wrap:break-word;
-	overflow-wrap:break-word;
+  margin: 0;
+  text-align: center;
 }
-body {
-	font-size:var(--scale-1);           /* 20px */
-  	line-height:1.6;
-}
-.container p {
-	margin:0 0 var(--spacing-xl) 0;
-	font-size:var(--scale-1);
-	line-height:1.6;
+.wordmark {
+  display: inline-block;
+  font: 900 clamp(48px, 13vw, 84px) / 1 var(--font);
+  letter-spacing: -0.03em;
+  rotate: -2deg;
+  filter: url(#diecut-lg);
 }
 
-/* Container spacing */
-.container {
-	padding:var(--spacing-xl) var(--spacing-m) 0 var(--spacing-m);
-	text-align:center;
+/* Cards */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 68px;
+  padding: 14px 18px;
+  background: var(--white);
+  border: var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  font: 900 20px / 1.15 var(--font);
+  transition:
+    transform 90ms ease-out,
+    box-shadow 90ms ease-out;
+}
+/* Press down into the shadow: the one place a shadow is allowed to change */
+.card:hover,
+.card:focus-visible {
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 var(--outline);
+}
+.card:focus-visible {
+  outline: 4px solid var(--white);
+  outline-offset: 6px;
+}
+.card__label {
+  flex: 1;
+  min-width: 0;
+}
+.card__tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  background: var(--ink);
+  border-radius: 8px;
+}
+.card__tile img {
+  width: 20px;
+  height: 20px;
 }
 
-/* Footer */
+/* Latest video (the one hero: amber) and latest post (white) */
+.latest {
+  display: grid;
+  gap: 18px;
+  margin-top: 48px;
+}
+.latest .card {
+  min-height: 92px;
+  padding: 16px 20px;
+}
+.latest .card__label {
+  font-size: clamp(18px, 4.8vw, 24px);
+}
+.kicker {
+  display: block;
+  margin-bottom: 6px;
+  font: 700 13px / 1 var(--mono);
+}
+.card--video {
+  background: var(--amber);
+}
+.play {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  background: var(--white);
+  border: 4px solid var(--outline);
+  border-radius: 50%;
+}
+.play::after {
+  content: "";
+  margin-left: 5px;
+  border-left: 18px solid var(--outline);
+  border-block: 11px solid transparent;
+}
+.prompt {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  background: var(--ink);
+  color: var(--mint);
+  border-radius: 12px;
+  font: 700 20px / 1 var(--mono);
+}
+
+/* Links */
+.links {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin: 44px 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 600px) {
+  .links {
+    grid-template-columns: 1fr 1fr;
+  }
+  .links li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
 footer {
-	margin:var(--spacing-xxl) 0;            /* 4rem (64px) top and bottom */
-    font-size:var(--scale-0);
+  margin-top: 56px;
+  text-align: center;
+  font: 700 13px / 1 var(--mono);
+  color: var(--foot);
 }
 
-/* Responsive adjustments */
-@media (max-width:34.375rem) {              /* 550px */
-  h1 {
-	font-size:var(--scale-4);
+/* Entrance: scale 0.92 -> 1 in ~0.25 s with back.out(1.2), top to bottom.
+   Nothing moves afterwards. CSS only, so it works under the CSP. */
+@keyframes land {
+  from {
+    opacity: 0;
+    scale: 0.92;
+  }
 }
-body {
-	font-size:var(--scale-0);
+.wordmark,
+.latest .card,
+.links li,
+footer {
+  animation: land 250ms cubic-bezier(0.34, 1.32, 0.64, 1) both;
 }
-.container p {
-	font-size:var(--scale-0);
+.latest .card:nth-child(1) {
+  animation-delay: 80ms;
 }
-.avatar {
-	margin-bottom:var(--spacing-m);
+.latest .card:nth-child(2) {
+  animation-delay: 140ms;
+}
+.links li:nth-child(1) {
+  animation-delay: 200ms;
+}
+.links li:nth-child(2) {
+  animation-delay: 240ms;
+}
+.links li:nth-child(3) {
+  animation-delay: 280ms;
+}
+.links li:nth-child(4) {
+  animation-delay: 320ms;
+}
+.links li:nth-child(5) {
+  animation-delay: 360ms;
+}
+.links li:nth-child(6) {
+  animation-delay: 400ms;
+}
+.links li:nth-child(7) {
+  animation-delay: 440ms;
+}
+.links li:nth-child(8) {
+  animation-delay: 480ms;
+}
+.links li:nth-child(n + 9) {
+  animation-delay: 520ms;
 }
 footer {
-	margin:var(--spacing-xl) 0;         	/* 3rem (48px) top and bottom */
+  animation-delay: 560ms;
 }
-}
-
-/* Links
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  a {
-	color:#2457F5;
-	text-decoration:underline;
-}
-a:hover {
-	color:#083BDA;
-}
-
-/* Buttons
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-.button,button {
-	display:inline-flex;
-	align-items:center;
-	justify-content:center;
-	width:18.75rem;             	/* 300px */
- 	min-height:3rem;                /* 48px */
-  	padding:0.75rem 1rem;         	/* 12px ; 16px */
-  	font-size:1.125rem;           	/* 18px */
-  	font-weight:700;
-	text-decoration:none;
-	white-space:normal;
-  	background-color:var(--button-background,transparent);
-	color:var(--button-text,#000000);
-	border:var(--button-border,none);
-	border-radius:0.5rem;
-	cursor:pointer;
-	box-sizing:border-box;
-	hyphens:auto;               	/* Delete this to remove automatic hyphen on line break */
-  	margin-bottom:1rem;
-	text-align:center;
-	line-height:1.3;
-}
-
-/* Icons
-–––––––––––––––––––––––––––––––––––––––––––––––––– */
-.icon {
-	width:1.25rem;
-	height:1.25rem;
-	margin-right:0.5rem;
-	flex-shrink:0;
-}
-
-/* Avatar
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-.avatar {
-	width: 8rem;             /* 128px */
-	height: 8rem;
-	object-fit: cover;
-	background-position: center;
-	margin-bottom: var(--spacing-l);
+@media (prefers-reduced-motion: reduce) {
+  .wordmark,
+  .latest .card,
+  .links li,
+  footer {
+    animation: none;
   }
-
-   /* Modifier for no avatar rounding */
-   .avatar--none {
-	border-radius: 0%;
+  .card {
+    transition: none;
   }
-
-  /* Modifier for rounded avatar */
-  .avatar--rounded {
-	border-radius: 50%;
-  }
-
-  /* Modifier for slightly rounded corners */
-  .avatar--soft {
-	border-radius: 0.5rem;   /* 8px rounded corners */
-  }
-
-/* Theme System
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-/* Light theme is default above */
-
-/* Dark theme */
-:root.theme-dark {
-	color-scheme:dark;
-}
-:root.theme-dark :focus-visible {
-	outline: 2px solid #4899F7;
-	outline-offset: 2px;
-  }
-:root.theme-dark body {
-	background-color:#121212;
-	color:#ffffff;
-}
-:root.theme-dark a:not(.button) {
-	color:#4899F7;
-}
-:root.theme-dark a:not(.button):hover {
-	color:#7AB8FF;
-}
-
-/* Auto theme */
-:root.theme-auto {
-	color-scheme:light dark;
-}
-@media (prefers-color-scheme:dark) {
-	:root.theme-auto body {
-	background-color:#121212;
-	color:#ffffff;
-}
-:root.theme-auto :focus-visible {
-    outline: 2px solid #4899F7;
-    outline-offset: 2px;
-  }
-:root.theme-auto a:not(.button) {
-	color:#4899F7;
-}
-:root.theme-auto a:not(.button):hover {
-	color:#7AB8FF;
-}
-}
-
-/* Button Text Color Override
-    –––––––––––––––––––––––––––––––––––––––––––––––––– */
-    .button:hover,button:hover {
-	color:var(--button-text);
-}
-
-/* Responsive Typography
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  @media (max-width:34.375rem) {            /* 550px */
-    h1 {
-	font-size:2rem;                         /* 32px */
-	}
-	body {
-	font-size:1rem;                    		/* 16px */
-	}
-}
-
-/* Privacy Page Styles
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-nav {
-	margin:var(--spacing-l) 0;
-	text-align:left;
-}
-section {
-	margin:var(--spacing-xl) 0;
-	text-align:left;
-}
-h2 {
-	font-size:var(--scale-3);
-	font-weight:700;
-	margin-bottom:var(--spacing-m);
-}
-h3 {
-	font-size:var(--scale-2);
-	font-weight:600;
-	margin:var(--spacing-l) 0 var(--spacing-s) 0;
-}
-ul {
-	list-style:none;
-	padding:0;
-	margin:0 0 var(--spacing-m) 0;
-}
-ul li {
-	margin-bottom:var(--spacing-xs);
-}
-
-/* Privacy page specific responsive adjustments */
-  @media (max-width:34.375rem) {
-	h2 {
-	font-size:var(--scale-2);
-	}
-	h3 {
-	font-size:var(--scale-1);
-	}
-	section {
-	margin:var(--spacing-l) 0;
-	}
-}
-
-/* Font Face Definitions
-  –––––––––––––––––––––––––––––––––––––––––––––––––– */
-@font-face {
-	font-display:swap;
-	font-family:'Open Sans';
-	font-style:normal;
-	font-weight:400;
-	src:url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-regular.eot');
-	src:url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-regular.eot?#iefix') format('embedded-opentype'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff2') format('woff2'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-regular.woff') format('woff'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-regular.ttf') format('truetype'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-regular.svg#OpenSans') format('svg');
-}
-@font-face {
-	font-display:swap;
-	font-family:'Open Sans';
-	font-style:normal;
-	font-weight:600;
-	src:url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-600.eot');
-	src:url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-600.eot?#iefix') format('embedded-opentype'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-600.woff2') format('woff2'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-600.woff') format('woff'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-600.ttf') format('truetype'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-600.svg#OpenSans') format('svg');
-}
-@font-face {
-	font-display:swap;
-	font-family:'Open Sans';
-	font-style:normal;
-	font-weight:700;
-	src:url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-700.eot');
-	src:url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-700.eot?#iefix') format('embedded-opentype'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-700.woff2') format('woff2'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-700.woff') format('woff'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-700.ttf') format('truetype'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-700.svg#OpenSans') format('svg');
-}
-@font-face {
-	font-display:swap;
-	font-family:'Open Sans';
-	font-style:normal;
-	font-weight:800;
-	src:url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-800.eot');
-	src:url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-800.eot?#iefix') format('embedded-opentype'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-800.woff2') format('woff2'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-800.woff') format('woff'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-800.ttf') format('truetype'),url('../fonts/open-sans-v34-vietnamese_latin-ext_latin_hebrew_greek-ext_greek_cyrillic-ext_cyrillic-800.svg#OpenSans') format('svg');
 }

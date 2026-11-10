@@ -1,0 +1,57 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Update latest video and post
+
+on:
+  # Every 8 hours. GitHub's scheduler often runs late or skips runs, so keep it loose.
+  schedule:
+    - cron: "41 */8 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-latest
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      # Push with the bot app's token, not GITHUB_TOKEN: pushes made with
+      # GITHUB_TOKEN don't trigger other workflows, so Pages and Docker wouldn't rebuild.
+      - name: Generate Token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
+
+      - name: Fetch feeds and rewrite the latest cards
+        run: python3 scripts/update-latest.py
+
+      # The lint workflow prettier-checks site/**; long titles would otherwise fail it.
+      - name: Format
+        run: mise exec -- prettier --write site/index.html
+
+      - name: Commit and push if changed
+        env:
+          APP_SLUG: "${{ steps.app-token.outputs.app-slug }}"
+        run: |
+          if git diff --quiet -- site/index.html; then
+            echo "No change."
+            exit 0
+          fi
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${APP_SLUG}[bot]@users.noreply.github.com"
+          git add site/index.html
+          git commit -m "chore(latest): update latest video and post"
+          git push
