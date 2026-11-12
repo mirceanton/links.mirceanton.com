@@ -14,6 +14,8 @@ from __future__ import annotations
 import html
 import re
 import sys
+import time
+import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -26,10 +28,20 @@ INDEX = Path(__file__).resolve().parent.parent / "site" / "index.html"
 ATOM = {"a": "http://www.w3.org/2005/Atom"}
 
 
-def fetch(url: str) -> ET.Element:
+def fetch(url: str, attempts: int = 5) -> ET.Element:
+    """GET and parse a feed, retrying: YouTube's feed endpoint returns sporadic 404s/5xx."""
     req = urllib.request.Request(url, headers={"User-Agent": "links-latest-updater"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return ET.fromstring(resp.read())
+    for attempt in range(1, attempts + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return ET.fromstring(resp.read())
+        except (urllib.error.URLError, TimeoutError, ET.ParseError) as exc:
+            if attempt == attempts:
+                raise RuntimeError(f"{url}: {exc}") from exc
+            delay = 5 * 2 ** (attempt - 1)
+            print(f"warn: {url}: {exc}; retry {attempt}/{attempts - 1} in {delay}s", file=sys.stderr)
+            time.sleep(delay)
+    raise AssertionError("unreachable")
 
 
 def latest_video() -> tuple[str, str]:
