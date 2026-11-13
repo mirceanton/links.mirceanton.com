@@ -6,7 +6,8 @@ Rewrites the HTML between the <!-- latest:video:start/end --> and
 .github/workflows/update-latest.yaml, which formats the file with prettier and
 commits it when it changed; that push triggers the Pages and Docker builds.
 
-Stdlib only. Exits non-zero, leaving the file untouched, if a feed can't be read.
+Stdlib only. A feed that can't be read leaves its card as committed; exits non-zero
+only if neither feed could be read.
 """
 
 from __future__ import annotations
@@ -21,7 +22,12 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 YOUTUBE_CHANNEL_ID = "UChoN8zyrrkFGiHdd9iiqLZQ"
-YOUTUBE_FEED = f"https://www.youtube.com/feeds/videos.xml?channel_id={YOUTUBE_CHANNEL_ID}"
+# The channel feed 404s for some callers (GitHub runners included), so fall back to the
+# channel's "uploads, no Shorts" playlist (UULF + the channel ID without its "UC" prefix).
+YOUTUBE_FEEDS = [
+    f"https://www.youtube.com/feeds/videos.xml?channel_id={YOUTUBE_CHANNEL_ID}",
+    f"https://www.youtube.com/feeds/videos.xml?playlist_id=UULF{YOUTUBE_CHANNEL_ID[2:]}",
+]
 BLOG_FEED = "https://mirceanton.com/feed.xml"
 
 INDEX = Path(__file__).resolve().parent.parent / "site" / "index.html"
@@ -46,12 +52,20 @@ def fetch(url: str, attempts: int = 5) -> ET.Element:
 
 def latest_video() -> tuple[str, str]:
     """Newest entry in the channel's Atom feed, skipping Shorts."""
-    for entry in fetch(YOUTUBE_FEED).iterfind("a:entry", ATOM):
-        link = entry.find("a:link", ATOM).get("href", "")
-        if "/shorts/" in link:
+    errors = []
+    for url in YOUTUBE_FEEDS:
+        try:
+            root = fetch(url, attempts=2)
+        except RuntimeError as exc:
+            errors.append(str(exc))
             continue
-        return entry.findtext("a:title", "", ATOM).strip(), link
-    raise RuntimeError("no non-Short videos in the YouTube feed")
+        for entry in root.iterfind("a:entry", ATOM):
+            link = entry.find("a:link", ATOM).get("href", "")
+            if "/shorts/" in link:
+                continue
+            return entry.findtext("a:title", "", ATOM).strip(), link
+        errors.append(f"{url}: no non-Short videos")
+    raise RuntimeError("; ".join(errors))
 
 
 def latest_post() -> tuple[str, str]:
@@ -102,23 +116,23 @@ def replace_block(page: str, kind: str, content: str) -> str:
 
 
 def main() -> int:
-    try:
-        video = latest_video()
-        post = latest_post()
-    except Exception as exc:  # network, parse or empty feed
-        print(f"error: {exc}", file=sys.stderr)
-        return 1
-    if not all(video) or not all(post):
-        print(f"error: empty title or link: {video!r} {post!r}", file=sys.stderr)
-        return 1
-
+    """Update each card independently; a source that fails keeps its committed card."""
     page = INDEX.read_text(encoding="utf-8")
-    page = replace_block(page, "video", card("video", *video))
-    page = replace_block(page, "post", card("post", *post))
+    failed = 0
+    for kind, getter in (("video", latest_video), ("post", latest_post)):
+        try:
+            title, href = getter()
+            if not (title and href):
+                raise RuntimeError(f"empty title or link: {title!r} {href!r}")
+        except Exception as exc:  # network, parse or empty feed
+            print(f"warn: latest {kind} not updated: {exc}", file=sys.stderr)
+            failed += 1
+            continue
+        page = replace_block(page, kind, card(kind, title, href))
+        print(f"{kind}: {title} <{href}>")
     INDEX.write_text(page, encoding="utf-8")
-    print(f"video: {video[0]} <{video[1]}>")
-    print(f"post:  {post[0]} <{post[1]}>")
-    return 0
+    # Only fail when nothing could be fetched; one flaky feed shouldn't turn CI red.
+    return 1 if failed == 2 else 0
 
 
 if __name__ == "__main__":
